@@ -30,7 +30,7 @@ and possibly even more things, if I come up with more things and feel like addin
 
 ## How do I use it?
 
-Currently, the only way to use it is to access it via the web, so simply visit <yaurls.it> to try it out!
+Currently, the only way to use it is to access it via the web, so simply visit [yaurls.it](https://www.youtube.com/watch?v=dQw4w9WgXcQ) to try it out!
 
 ## Why am I making this?
 
