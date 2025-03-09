@@ -59,9 +59,3 @@ def redirect_url(short_url: str):
         raise HTTPException(status_code=404, detail="URL not found")
     else:
         return RedirectResponse(url)
-        
-
-# Next up:
-# - Whip up a simple frontend for the user to input a URL, click a button, and get a short URL
-# - Try deploying on Vercel to see if it works
-# - Then, maybe consider adding some addt'l features
