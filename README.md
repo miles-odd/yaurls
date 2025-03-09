@@ -39,10 +39,9 @@ As you may have figured out by now, this README hasn't been taking itself too se
 This is actually my first time doing any sort of webdev-related project, so I needed something simple enough to actually finish that would maybe allow for a few additional features. A URL shortener just seemed like the right choice for that, with the added bonus that it could potentially be something that I end up using (not for any added benefit over other, existing URL shorteners, but just because it would be cool to use my own thing, y'know?).
 
 Here are some things I've learned while working on this project:
-- How simple front/backend stuff works
-- How to make a simple CRUD app
-- How to use FastAPI and SQLite
+- Simple front/backend stuff and making a full CRUD app
+- Using FastAPI and SQLite, as well as refreshing my Python skills (I've only used it for data science-y stuff)
 
 Here are some challenges I faced while working on this project:
-- Really just how to get started and set up a project like this
+- Really, just how to get started and set up a project like this
 - Getting used to Python syntax (I miss you, semicolons)
