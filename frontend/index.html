@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yaurls - URL Shortener</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>yaurls - URL Shortener</h1>
+    <input type="text" id="url-input" placeholder="Enter URL to shorten">
+    <br>
+    <button onclick="shortenURL()">Shorten</button>
+    <div id="result"></div>
+
+    <br>
+
+    <input type="text" id="short-url-input" placeholder="Enter shortened URL">
+    <br>
+    <button onclick="redirectURL()">Go</button>
+
+  </div>
+
+    <script>
+        async function shortenURL() {
+            const urlInput = document.getElementById('url-input').value;
+            const resultDiv = document.getElementById('result');
+
+            if (!urlInput) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/shorten?url=' + JSON.stringify(urlInput), {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ original_url: urlInput })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `Shortened URL: <a href="${data.shortened_url}" target="_blank">${data.shortened_url}</a>`;
+                } else {
+                    alert('Failed to shorten URL');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong');
+            }
+        }
+
+        async function redirectURL() {
+            urlInput = document.getElementById('short-url-input').value;
+    
+            if (!urlInput) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            try {
+                window.location.href = 'http://127.0.0.1:8000/redirect?short_url=' + urlInput;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong');
+            }
+        }
+    </script>
+</body>
+</html>
