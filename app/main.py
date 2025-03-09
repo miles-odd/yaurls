@@ -1,7 +1,8 @@
+# Core application logic
 from fastapi import FastAPI
 
-from app.database import init_db
-
+from .database import *
+from .utils import *
 
 app = FastAPI()
 
@@ -9,4 +10,6 @@ init_db()
 
 @app.get("/")
 async def root():
-    return {"message": "hai"}
+    test_str = generate_random_slug(6)
+    return {"message": test_str}
+
