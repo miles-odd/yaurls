@@ -1,4 +1,9 @@
+# Python-related ignores
 .venv/
-
 __pycache__/
+
+# MacOS-related ignores
 .DS_Store
+
+# ignore DB file (for obvious reasons)
+yaurls.db
