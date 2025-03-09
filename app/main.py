@@ -1,5 +1,7 @@
 # Core application logic
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
+
 from .database import *
 from .utils import *
 
@@ -10,7 +12,10 @@ init_db()
 # Test stuff with root route
 @app.get("/")
 async def root():
-    return {"message": "Hello, World!"}
+    slug = generate_random_slug(6)
+    insert_url(slug, "https://www.google.com")
+    
+    return redirect_url(slug)
 
 # Create new slug to map to the given URL
 @app.post("/shorten")
@@ -25,6 +30,7 @@ def shorten_url(url: str):
 @app.get("/{slug}")
 def expand_url(short_url: str):
     
+    # Obtain just the slug if short_url contains the whole thing
     if short_url.startswith("yaurls.it/"):
         slug = short_url.removeprefix("yaurls.it/")
     else:
@@ -36,3 +42,26 @@ def expand_url(short_url: str):
         return {"error": "URL not found"}
     else:
         return {"retrieved": url}
+    
+# Redirect to the URL mapped to by the given slug
+@app.get("/{slug}/redirect")
+def redirect_url(short_url: str):
+    
+    # Obtain just the slug if short_url contains the whole thing
+    if short_url.startswith("yaurls.it/"):
+        slug = short_url.removeprefix("yaurls.it/")
+    else:
+        slug = short_url
+        
+    url = get_url(slug)
+    
+    if url is None:
+        raise HTTPException(status_code=404, detail="URL not found")
+    else:
+        return RedirectResponse(url)
+        
+
+# Next up:
+# - Whip up a simple frontend for the user to input a URL, click a button, and get a short URL
+# - Try deploying on Vercel to see if it works
+# - Then, maybe consider adding some addt'l features
