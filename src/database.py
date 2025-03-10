@@ -1,7 +1,16 @@
 # Provides functions to interact with SQLite database
 import sqlite3
+from pydantic import BaseModel
 
 DB_FILE = "yaurls.db"
+
+class URLRequest(BaseModel):
+    original_url: str
+    
+class Entry(BaseModel):
+    slug: str
+    url: str
+    visits: int
 
 # Initialize the database (+ create it, if it doesn't exist in local project directory)
 def init_db():
@@ -14,7 +23,7 @@ def init_db():
     
     con.close()
 
-# Insert a new slug/url mapping into the database
+# Insert a new slug/URL mapping into the database
 def insert_url(slug: str, url: str) -> None:
     con = sqlite3.connect(DB_FILE)
     cursor = con.cursor()

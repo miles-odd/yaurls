@@ -2,7 +2,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-
 from pydantic import BaseModel
 
 from .database import *
@@ -14,8 +13,7 @@ class URLRequest(BaseModel):
 class Entry(BaseModel):
     slug: str
     url: str
-    visits: int
-    
+
 # Start FastAPI and make sure the database exists
 app = FastAPI()
 init_db()
@@ -29,42 +27,43 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Test stuff with root route
+# Root route -> serve index.html
 @app.get("/")
 async def root():
     return FileResponse("frontend/index.html")
 
-# Create new slug to map to the given URL
+# Shorten -> take given URL and map to new slug
 @app.post("/shorten")
 def shorten_url(request: URLRequest) -> dict:
     slug = generate_random_slug(6)
-    # Strip quotes from URL wrapped in JSON
-    url = request.original_url[1:-1]
-    insert_url(slug, request.original_url)
     
-    # Expected return of the form {"shortened_url": "yaurls.it/abc123"}
+    url = request.original_url # Note: might have quotes around it from being wrapped in json
+    url = strip_quotes(url)
+        
+    insert_url(slug, url)
+    
     short_url = "yaurls.it/" + slug
     return {"shortened_url": short_url}
 
 # Return the URL mapped to by the given slug
-@app.get("/{slug}")
+@app.get("/expand/{slug}")
 def expand_url(slug: str) -> str:
     url = get_url(slug)
     
     if url is None:
+        # not a real slug; doesn't exist in database
         raise HTTPException(status_code=404, detail="URL not found")
-    else:
-        return url
+
+    return url
     
 # Redirect to the URL mapped to by the given slug
 @app.get("/redirect/{slug}")
 def redirect_url(slug: str) -> RedirectResponse:
     url = get_url(slug)
-    
-    if not url.startswith("http"):
-        url = "https://" + url
+    url = add_http(url)
 
     if url is None:
+        # not a real slug; doesn't exist in database
         raise HTTPException(status_code=404, detail="URL not found")
-    
+
     return RedirectResponse(url=url, status_code=307)
