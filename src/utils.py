@@ -16,7 +16,7 @@ def strip_quotes(str: str) -> str:
     if str.startswith("\""):
         str = str[1:-1]
         
-    return url
+    return str
 
 # Add https:// to the beginning of a stiring if it doesn't already have it.
 def add_http(str: str) -> str:

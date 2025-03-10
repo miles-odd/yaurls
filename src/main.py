@@ -30,7 +30,7 @@ app.add_middleware(
 # Root route -> serve index.html
 @app.get("/")
 async def root():
-    return FileResponse("frontend/index.html")
+    return FileResponse("templates/index.html")
 
 # Shorten -> take given URL and map to new slug
 @app.post("/shorten")
