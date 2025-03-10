@@ -38,7 +38,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>yaurls - URL Shortener</h1>
+    <h1>yet another URL shortener</h1>
     <input type="text" id="url-input" placeholder="Enter URL to shorten">
     <br>
     <button onclick="shortenURL()">Shorten</button>
@@ -54,27 +54,32 @@
 
     <script>
         async function shortenURL() {
+            // Get user-inputted URL
             const urlInput = document.getElementById('url-input').value;
             const resultDiv = document.getElementById('result');
 
             if (!urlInput) {
+                // User didn't enter a URL
                 alert('Please enter a URL');
                 return;
             }
 
             try {
-                const response = await fetch('http://127.0.0.1:8000/shorten?url=' + JSON.stringify(urlInput), {
-                    method: 'POST',
-                    headers: {
-                    'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ original_url: urlInput })
-                });
+                // Send a POST request to the server to shorten the URL
+                const response = await fetch('http://localhost:8000/shorten', {
+                      method: 'POST',
+                      headers: {
+                         'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ original_url: urlInput })
+                  });
 
                 if (response.ok) {
+                    // Extract JSON from response and dynamically update the result div to display the shortened URL
                     const data = await response.json();
                     resultDiv.innerHTML = `Shortened URL: <a href="${data.shortened_url}" target="_blank">${data.shortened_url}</a>`;
                 } else {
+                    // URL was not successfully created, for some reason
                     alert('Failed to shorten URL');
                 }
             } catch (error) {
@@ -84,15 +89,26 @@
         }
 
         async function redirectURL() {
+
             urlInput = document.getElementById('short-url-input').value;
     
             if (!urlInput) {
+                // User didn't enter a URL
                 alert('Please enter a URL');
                 return;
             }
 
+            slug = urlInput.replace('yaurls.it/', '');
+
+            if(!slug || slug.length != 6) {
+                // Basic error handling
+                alert('Please enter a valid shortened URL');
+                return;
+            }
+
             try {
-                window.location.href = 'http://127.0.0.1:8000/redirect?short_url=' + urlInput;
+                // Update href to redirect to the shortened URL
+                window.location.replace('http://127.0.0.1:8000/redirect/' + slug);
             } catch (error) {
                 console.error('Error:', error);
                 alert('Something went wrong');
