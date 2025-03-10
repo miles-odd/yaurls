@@ -39,11 +39,12 @@ As you may have figured out by now, this README hasn't been taking itself too se
 This is actually my first time doing any sort of webdev-related project, so I needed something simple enough to actually finish that would maybe allow for a few additional features. A URL shortener just seemed like the right choice for that, with the added bonus that it could potentially be something that I end up using (not for any added benefit over other, existing URL shorteners, but just because it would be cool to use my own thing, y'know?).
 
 ### Some things I learned
-- How to **setup a simple backend** for a full CRUD app from scratch, **using FastAPI and SQLite**
-- How to **actually make requests** and call the API from the user interface **using JS**
-- How to organize such a project.
+- How to **setup a simple backend** for a full CRUD app from scratch, specifically **using FastAPI and SQLite**.
+- How to **create a simple frontend** to handle user input and make calls to the REST API that I made.
+- How to organize such a project, even if the project is small in scale.
 
 ### Some challenges I faced
-- In general, just **how to get started setting up a project like this**. Even though it's probably one of the simplest CRUD apps out there, it still took a bit to figure out what I'd need and how to organize things to get stuff up and running. This is especially true given that I made it from scratch; I've contributed to apps before, but never had to build one from the ground up.
-- **Making successful calls to the API from the UI**. I found that backend was easier for me; it's one thing to actually implement the API and play around with it using hardcoded tests or Swagger, but it's another thing to actually integrate it into a webpage and have everything working. It seems like I don't really like frontend work :/ but it's something I must learn anyway.
+- **How to get started setting up a project like this**, like just in general. Even though it's probably one of the simplest CRUD apps out there, it still took a bit to figure out what I'd need and how to organize things to get stuff up and running. This is especially true given that I made it from scratch; I've contributed to apps before, but never had to build one from the ground up.
+- **Making successful calls to the API from the UI**. I had used basic JavaScript before to handle things like executing small code blocks or sending popup alerts to the user. However, sending requests to an API was new territory for me, and I had to learn a lot about the structure of HTTP requests and how to actually send those in order to even just get the core functionality down.
+- **Correctly handling redirects using FastAPI**. For a while, I was butting my head against my code because entering a shortened url would either redirect indefinitely or present a 404, even when I knew the slug existed in the database. Turns out all the logic was correct - but I was simply missing an `https://` in the URL parameter for a RedirectRequest. If only I had thought to done that sooner (I finally thought of it when I was reading through the documentation and saw that there was an `https://` in the example code and not one in my code and I thought to try it).
 - Getting used to Python syntax (I miss you, semicolons).
